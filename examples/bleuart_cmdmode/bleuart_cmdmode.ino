@@ -14,6 +14,7 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <Adafruit_NeoPixel.h>
 #if not defined (_VARIANT_ARDUINO_DUE_X_) && not defined (_VARIANT_ARDUINO_ZERO_)
   #include <SoftwareSerial.h>
 #endif
@@ -43,6 +44,7 @@ Adafruit_BluefruitLE_UART ble(bluefruitSS, BLUEFRUIT_UART_MODE_PIN,
 //                             BLUEFRUIT_SPI_MOSI, BLUEFRUIT_SPI_CS,
 //                             BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
 
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, 6, NEO_GRB + NEO_KHZ800);
 
 // A small helper
 void error(const __FlashStringHelper*err) {
@@ -64,6 +66,11 @@ void setup(void)
   Serial.begin(115200);
   Serial.println(F("Adafruit Bluefruit Command Mode Example"));
   Serial.println(F("---------------------------------------"));
+
+  strip.begin();
+  strip.show();
+  strip.setPixelColor(0, strip.Color(0, 0, 7)); // 
+  strip.show();
 
   /* Initialise the module */
   Serial.print(F("Initialising the Bluefruit LE module: "));
@@ -135,6 +142,22 @@ void loop(void)
   }
   // Some data was found, its in the buffer
   Serial.print(F("[Recv] ")); Serial.println(ble.buffer);
+  
+   byte r = ble.buffer[2];
+  Serial.print("r = ");
+  Serial.println(r, DEC);
+
+  byte g = ble.buffer[3];
+  Serial.print("g = ");
+  Serial.println(g, DEC);
+
+  byte b = ble.buffer[4];
+  Serial.print("b = ");
+  Serial.println(b, DEC);
+ 
+  strip.setPixelColor(0, strip.Color(r, g, b)); // 
+  strip.show();
+  
   ble.waitForOK();
 }
 
@@ -163,3 +186,6 @@ bool getUserInput(char buffer[], uint8_t maxSize)
 
   return true;
 }
+
+
+
