@@ -121,7 +121,7 @@ void loop(void)
   data.getBytes(buf, 6);
   ble.print("AT+BLEUARTTX=");
   ble.print(data);
-//  ble.waitForOK();
+  ble.waitForOK();
 //  ble.flush();
  
   // Check for user input
