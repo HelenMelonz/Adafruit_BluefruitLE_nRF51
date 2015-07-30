@@ -115,6 +115,15 @@ void setup(void)
 /**************************************************************************/
 void loop(void)
 {
+ //TX Talk to bluetooth
+  String data = "hello\n";
+  byte buf[6];
+  data.getBytes(buf, 6);
+  ble.print("AT+BLEUARTTX=");
+  ble.print(data);
+//  ble.waitForOK();
+//  ble.flush();
+ 
   // Check for user input
   char inputs[BUFSIZE+1];
 
@@ -159,6 +168,7 @@ void loop(void)
   strip.show();
   
   ble.waitForOK();
+  
 }
 
 /**************************************************************************/
@@ -186,6 +196,5 @@ bool getUserInput(char buffer[], uint8_t maxSize)
 
   return true;
 }
-
 
 
